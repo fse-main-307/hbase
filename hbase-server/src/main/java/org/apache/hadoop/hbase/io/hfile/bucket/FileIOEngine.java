@@ -56,6 +56,7 @@ public class FileIOEngine extends PersistentIOEngine {
   private FileReadAccessor readAccessor = new FileReadAccessor();
   private FileWriteAccessor writeAccessor = new FileWriteAccessor();
 
+  @SuppressWarnings("objectconstruction:required.method.not.called") //FP: ownership transfer to rafs[] :: FP: ownership transfer to fileChannels[]
   public FileIOEngine(long capacity, boolean maintainPersistence, String... filePaths)
       throws IOException {
     super(filePaths);
@@ -289,6 +290,7 @@ public class FileIOEngine extends PersistentIOEngine {
   }
 
   @VisibleForTesting
+  @SuppressWarnings("objectconstruction:required.method.not.called") //FP: ownership transfer to an array :: FP ownership transfer to an array
   void refreshFileConnection(int accessFileNum, IOException ioe) throws IOException {
     ReentrantLock channelLock = channelLocks[accessFileNum];
     channelLock.lock();

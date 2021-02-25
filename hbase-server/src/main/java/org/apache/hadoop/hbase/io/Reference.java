@@ -164,6 +164,7 @@ public class Reference {
    * @return New Reference made from passed <code>p</code>
    * @throws IOException
    */
+  @SuppressWarnings("objectconstruction:required.method.not.called") //FP: in is overwritten by itself in a ternary expression
   public static Reference read(final FileSystem fs, final Path p)
   throws IOException {
     InputStream in = fs.open(p);

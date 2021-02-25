@@ -42,6 +42,7 @@ import org.apache.hadoop.hbase.util.CommonFSUtils;
 import org.apache.hadoop.hbase.util.CommonFSUtils.StreamLacksCapabilityException;
 import org.apache.hadoop.hbase.util.EncryptionTest;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.objectconstruction.qual.NotOwning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -250,5 +251,5 @@ public abstract class AbstractProtobufLogWriter {
   protected abstract long writeWALTrailerAndMagic(WALTrailer trailer, byte[] magic)
       throws IOException;
 
-  protected abstract OutputStream getOutputStreamForCellEncoder();
+  @NotOwning protected abstract OutputStream getOutputStreamForCellEncoder();
 }

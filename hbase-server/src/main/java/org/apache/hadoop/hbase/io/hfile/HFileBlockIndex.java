@@ -41,6 +41,8 @@ import org.apache.hadoop.hbase.PrivateCellUtil;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.KeyValue.KeyOnlyKeyValue;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.mustcall.qual.MustCall;
+import org.checkerframework.checker.objectconstruction.qual.NotOwning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.hadoop.hbase.io.HeapSize;
@@ -866,7 +868,7 @@ public class HFileBlockIndex {
      * @return the buffered input stream or wrapped byte input stream
      * @throws IOException
      */
-    public DataInputStream readRootIndex(HFileBlock blk, final int numEntries) throws IOException {
+    public @MustCall({}) DataInputStream readRootIndex(HFileBlock blk, final int numEntries) throws IOException {
       DataInputStream in = blk.getByteStream();
       readRootIndex(in, numEntries);
       return in;

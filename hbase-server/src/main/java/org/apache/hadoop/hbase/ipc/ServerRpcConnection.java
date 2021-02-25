@@ -405,6 +405,7 @@ abstract class ServerRpcConnection implements Closeable {
     }
   }
 
+  @SuppressWarnings("objectconstruction:required.method.not.called") //FP: add MCC annotation for channels
   private void processUnwrappedData(byte[] inBuf) throws IOException, InterruptedException {
     ReadableByteChannel ch = Channels.newChannel(new ByteArrayInputStream(inBuf));
     // Read all RPCs contained in the inBuf, even partial ones

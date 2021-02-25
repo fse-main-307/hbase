@@ -30,6 +30,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.ServerName;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.objectconstruction.qual.Owning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -219,7 +220,8 @@ public class HeterogeneousRegionCountCostFunction extends StochasticLoadBalancer
     return readLines(reader);
   }
 
-  private List<String> readLines(BufferedReader reader) throws IOException {
+  @SuppressWarnings("objectconstruction:required.method.not.called") //TP: readLine() throws IOException
+  private List<String> readLines(@Owning BufferedReader reader) throws IOException {
     final List<String> records = new ArrayList<>();
     String line;
     while ((line = reader.readLine()) != null) {

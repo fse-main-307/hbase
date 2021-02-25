@@ -76,35 +76,45 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
-        <configuration>
-          <fork>true</fork>
-          <source>1.8</source>
-          <target>1.8</target>
-          <showWarnings>true</showWarnings>
-          <compilerArguments>
-            <Xmaxerrs>10000</Xmaxerrs>
-            <Xmaxwarns>10000</Xmaxwarns>
-          </compilerArguments>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>net.sridharan.objectconstruction</groupId>
-              <artifactId>object-construction-checker</artifactId>
-              <version>0.1.10-SNAPSHOT</version>
-            </path>
-            <path>
-              <groupId>org.checkerframework</groupId>
-              <artifactId>checker</artifactId>
-              <version>3.7.0</version>
-            </path>
-          </annotationProcessorPaths>
-          <compilerArgs combine.children="append">
-            <!-- If using JDK 8, use only the two arguments immediately below. -->
-            <arg>-J-Xbootclasspath/p:${errorProneJavac}</arg>
-            <arg>-Awarns</arg>
-            <arg>-AdisableReturnsReceiver</arg>
-            <arg>-AcheckMustCall</arg>
-          </compilerArgs>
-        </configuration>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <configuration>
+              <fork>true</fork>
+              <source>1.8</source>
+              <target>1.8</target>
+              <showWarnings>true</showWarnings>
+              <compilerArguments>
+                <Xmaxerrs>10000</Xmaxerrs>
+                <Xmaxwarns>10000</Xmaxwarns>
+              </compilerArguments>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>net.sridharan.objectconstruction</groupId>
+                  <artifactId>object-construction-checker</artifactId>
+                  <version>0.1.10-SNAPSHOT</version>
+                </path>
+                <path>
+                  <groupId>org.checkerframework</groupId>
+                  <artifactId>checker</artifactId>
+                  <version>3.10.1-SNAPSHOT</version>
+                </path>
+              </annotationProcessorPaths>
+              <compilerArgs combine.children="append">
+                <!-- If using JDK 8, use only the two arguments immediately below. -->
+                <arg>-J-Xbootclasspath/p:${errorProneJavac}</arg>
+                <arg>-Awarns</arg>
+                <arg>-AdisableReturnsReceiver</arg>
+                <arg>-AcheckMustCall</arg>
+                <arg>-AcountMustCall</arg>
+                <arg>-ArequirePrefixInWarningSuppressions</arg>
+                <arg>-AwarnUnneededSuppressions</arg>
+                <arg>-AskipDefs=^org.apache.hadoop.hbase.generated\.</arg>
+                <arg>-Astubs=../hbase.astub</arg>
+              </compilerArgs>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -283,7 +293,7 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
-      <version>3.7.0</version>
+      <version>3.10.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.google.errorprone</groupId>
@@ -427,7 +437,7 @@
       <groupId>org.glassfish.web</groupId>
       <artifactId>javax.servlet.jsp</artifactId>
     </dependency>
-      <!-- Also used by generated sources from our JSP -->
+    <!-- Also used by generated sources from our JSP -->
     <dependency>
       <groupId>javax.servlet.jsp</groupId>
       <artifactId>javax.servlet.jsp-api</artifactId>
@@ -792,10 +802,10 @@
           </plugin>
         </plugins>
         <pluginManagement>
-           <plugins>
-             <!--This plugin's configuration is used to store Eclipse m2e settings
-                 only. It has no influence on the Maven build itself and needs to
-                 be kept in plugin management, not in the actual plugins. -->
+          <plugins>
+            <!--This plugin's configuration is used to store Eclipse m2e settings
+                only. It has no influence on the Maven build itself and needs to
+                be kept in plugin management, not in the actual plugins. -->
             <plugin>
               <groupId>org.eclipse.m2e</groupId>
               <artifactId>lifecycle-mapping</artifactId>
@@ -812,10 +822,10 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                          <execute>
-                            <runOnIncremental>false</runOnIncremental>
-                            <runOnConfiguration>true</runOnConfiguration>
-                          </execute>
+                        <execute>
+                          <runOnIncremental>false</runOnIncremental>
+                          <runOnConfiguration>true</runOnConfiguration>
+                        </execute>
                       </action>
                     </pluginExecution>
                     <pluginExecution>

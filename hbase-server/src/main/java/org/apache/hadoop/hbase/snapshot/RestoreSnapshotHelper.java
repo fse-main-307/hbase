@@ -716,6 +716,7 @@ public class RestoreSnapshotHelper {
    * @param regionInfo destination region info for the table
    * @param storeFile reference file name
    */
+  @SuppressWarnings("objectconstruction:required.method.not.called") //TP: fs.create(outPath) throws IOException and in remains open :: TP: in remains open in else branch
   private void restoreReferenceFile(final Path familyDir, final RegionInfo regionInfo,
       final SnapshotRegionManifest.StoreFile storeFile) throws IOException {
     String hfileName = storeFile.getName();

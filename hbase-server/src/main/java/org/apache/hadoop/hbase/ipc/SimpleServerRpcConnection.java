@@ -146,6 +146,7 @@ class SimpleServerRpcConnection extends ServerRpcConnection {
    * @throws IOException
    * @throws InterruptedException
    */
+  @SuppressWarnings("objectconstruction:required.method.not.called") //TP: is remains open
   public int readAndProcess() throws IOException, InterruptedException {
     // If we have not read the connection setup preamble, look to see if that is on the wire.
     if (!connectionPreambleRead) {

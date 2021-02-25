@@ -82,6 +82,7 @@ import org.apache.hadoop.hdfs.protocol.DatanodeInfo;
 import org.apache.hadoop.util.StringUtils;
 import org.apache.htrace.core.TraceScope;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -842,7 +843,7 @@ public abstract class AbstractFSWAL<W extends WriterBase> implements WAL {
         Path oldPath = getOldPath();
         Path newPath = getNewPath();
         // Any exception from here on is catastrophic, non-recoverable so we currently abort.
-        W nextWriter = this.createWriterInstance(newPath);
+        @MustCall("close") W nextWriter = this.createWriterInstance(newPath);
         tellListenersAboutPreLogRoll(oldPath, newPath);
         // NewPath could be equal to oldPath if replaceWriter fails.
         newPath = replaceWriter(oldPath, newPath, nextWriter);
@@ -1108,7 +1109,7 @@ public abstract class AbstractFSWAL<W extends WriterBase> implements WAL {
     try {
       Path currentPath = getOldPath();
       if (path.equals(currentPath)) {
-        W writer = this.writer;
+        @MustCall("close") W writer = this.writer;
         return writer != null ? OptionalLong.of(writer.getSyncedLength()) : OptionalLong.empty();
       } else {
         return OptionalLong.empty();

@@ -65,6 +65,8 @@ import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.util.StringUtils;
 import org.apache.htrace.core.TraceScope;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.mustcall.qual.ResetMustCall;
+import org.checkerframework.checker.objectconstruction.qual.Owning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.hbase.thirdparty.com.google.protobuf.Message;
@@ -98,7 +100,7 @@ class BlockingRpcConnection extends RpcConnection implements Runnable {
   private Thread thread;
 
   // connected socket. protected for writing UT.
-  protected Socket socket = null;
+  protected @Owning Socket socket = null;
   private DataInputStream in;
   private DataOutputStream out;
 
@@ -246,6 +248,8 @@ class BlockingRpcConnection extends RpcConnection implements Runnable {
   }
 
   // protected for write UT.
+  @SuppressWarnings({"objectconstruction:required.method.not.called"}) // TP: no null check for socket
+  @ResetMustCall("this")
   protected void setupConnection() throws IOException {
     short ioFailures = 0;
     short timeoutFailures = 0;
@@ -735,6 +739,7 @@ class BlockingRpcConnection extends RpcConnection implements Runnable {
   }
 
   // just close socket input and output.
+  @SuppressWarnings("objectconstruction:required.method.not.called") // FP: socket is assigned to null after call close on socket
   private void closeSocket() {
     IOUtils.closeStream(out);
     IOUtils.closeStream(in);

@@ -25,6 +25,7 @@ import java.util.Objects;
 import org.apache.hadoop.hbase.io.util.StreamUtils;
 import org.apache.hadoop.hbase.util.ByteBufferUtils;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.mustcall.qual.MustCallChoice;
 
 /**
  * When deal with OutputStream which is not ByteBufferWriter type, wrap it with this class. We will
@@ -48,11 +49,11 @@ public class ByteBufferWriterOutputStream extends OutputStream
   private final int bufSize;
   private byte[] buf;
 
-  public ByteBufferWriterOutputStream(OutputStream os) {
+  @MustCallChoice public ByteBufferWriterOutputStream(@MustCallChoice OutputStream os) {
     this(os, DEFAULT_BUFFER_SIZE);
   }
 
-  public ByteBufferWriterOutputStream(OutputStream os, int size) {
+  @MustCallChoice public ByteBufferWriterOutputStream(@MustCallChoice OutputStream os, int size) {
     this.os = os;
     this.bufSize = size;
     this.buf = null;

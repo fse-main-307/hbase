@@ -54,6 +54,7 @@ public class VisibilityLabelServiceManager {
    *         class can be specified using "hbase.regionserver.visibility.label.service.class".
    * @throws IOException When VLS implementation, as specified in conf, can not be loaded.
    */
+  @SuppressWarnings("mustcall:assignment.type.incompatible") // FP: https://github.com/typetools/checker-framework/issues/979
   public VisibilityLabelService getVisibilityLabelService(Configuration conf) throws IOException {
     String vlsClassName = conf.get(VISIBILITY_LABEL_SERVICE_CLASS,
         DefaultVisibilityLabelServiceImpl.class.getCanonicalName()).trim();

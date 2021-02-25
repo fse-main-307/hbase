@@ -208,6 +208,7 @@ public abstract class CoprocessorHost<C extends Coprocessor, E extends Coprocess
    * @param includedClassPrefixes class name prefixes to include
    * @throws java.io.IOException Exception
    */
+  @SuppressWarnings("objectconstruction:required.method.not.called") //TP: close is not called on cl
   public E load(Path path, String className, int priority,
       Configuration conf, String[] includedClassPrefixes) throws IOException {
     Class<?> implClass;

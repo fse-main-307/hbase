@@ -50,6 +50,7 @@ import org.apache.hadoop.hbase.util.ObjectIntPair;
 import org.apache.hadoop.io.WritableUtils;
 import org.apache.htrace.core.TraceScope;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.hbase.thirdparty.com.google.common.annotations.VisibleForTesting;

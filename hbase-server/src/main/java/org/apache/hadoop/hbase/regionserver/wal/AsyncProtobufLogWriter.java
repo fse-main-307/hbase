@@ -36,6 +36,7 @@ import org.apache.hadoop.hbase.util.CommonFSUtils.StreamLacksCapabilityException
 import org.apache.hadoop.hbase.wal.AsyncFSWALProvider;
 import org.apache.hadoop.hbase.wal.WAL.Entry;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.objectconstruction.qual.NotOwning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -239,7 +240,7 @@ public class AsyncProtobufLogWriter extends AbstractProtobufLogWriter
   }
 
   @Override
-  protected OutputStream getOutputStreamForCellEncoder() {
+  @NotOwning protected OutputStream getOutputStreamForCellEncoder() {
     return asyncOutputWrapper;
   }
 

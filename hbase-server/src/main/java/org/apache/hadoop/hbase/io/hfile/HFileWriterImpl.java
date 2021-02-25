@@ -599,6 +599,7 @@ public class HFileWriterImpl implements HFile.Writer {
   }
 
   @Override
+  @SuppressWarnings("mustcall:argument.type.incompatible") // FP: https://github.com/typetools/checker-framework/issues/979
   public void close() throws IOException {
     if (outputStream == null) {
       return;

@@ -30,6 +30,9 @@ import org.apache.hadoop.hbase.util.ByteBufferAllocator;
 import org.apache.hadoop.hbase.util.ByteBufferArray;
 import org.apache.hadoop.util.StringUtils;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
+import org.checkerframework.checker.mustcall.qual.InheritableMustCall;
+import org.checkerframework.checker.objectconstruction.qual.Owning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,14 +41,15 @@ import org.slf4j.LoggerFactory;
  * mechanism
  */
 @InterfaceAudience.Private
+@InheritableMustCall("shutdown")
 public abstract class FileMmapIOEngine extends PersistentIOEngine {
   static final Logger LOG = LoggerFactory.getLogger(FileMmapIOEngine.class);
 
   protected final String path;
   protected long size;
   protected ByteBufferArray bufferArray;
-  private final FileChannel fileChannel;
-  private RandomAccessFile raf = null;
+  private final @Owning FileChannel fileChannel;
+  private final @Owning RandomAccessFile raf;
 
   public FileMmapIOEngine(String filePath, long capacity) throws IOException {
     super(filePath);
@@ -140,6 +144,7 @@ public abstract class FileMmapIOEngine extends PersistentIOEngine {
    * Close the file
    */
   @Override
+  @EnsuresCalledMethods(value = {"this.raf", "fileChannel"}, methods = {"close"})
   public void shutdown() {
     try {
       fileChannel.close();

@@ -241,6 +241,16 @@
       <artifactId>kerb-simplekdc</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>net.sridharan.objectconstruction</groupId>
+      <artifactId>must-call-qual</artifactId>
+      <version>0.1.10-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sridharan.objectconstruction</groupId>
+      <artifactId>object-construction-qual</artifactId>
+      <version>0.1.10-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <profiles>

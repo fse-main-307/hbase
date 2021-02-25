@@ -58,6 +58,10 @@ import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.security.authorize.ServiceAuthorizationManager;
 
 import org.apache.hbase.thirdparty.com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
+import org.checkerframework.checker.mustcall.qual.MustCall;
+import org.checkerframework.checker.mustcall.qual.ResetMustCall;
+import org.checkerframework.checker.objectconstruction.qual.Owning;
 
 /**
  * The RPC server with native java NIO implementation deriving from Hadoop to
@@ -99,14 +103,15 @@ public class SimpleRpcServer extends RpcServer {
   /** Listens on the socket. Creates jobs for the handler threads*/
   private class Listener extends Thread {
 
-    private ServerSocketChannel acceptChannel = null; //the accept channel
-    private Selector selector = null; //the selector that we use for the server
+    private @Owning ServerSocketChannel acceptChannel = null; //the accept channel
+    private @Owning Selector selector = null; //the selector that we use for the server
     private Reader[] readers = null;
     private int currentReader = 0;
     private final int readerPendingConnectionQueueLength;
 
     private ExecutorService readPool;
 
+    @SuppressWarnings({"objectconstruction:required.method.not.called", "objectconstruction:reset.not.owning"}) //FP: add annotation for Selector :: FP: socket() is MCC with an owning field :: FP: acceptChannel.socket() is MCC with an owning field
     public Listener(final String name) throws IOException {
       super(name);
       // The backlog of requests that we will have the serversocket carry.
@@ -146,9 +151,10 @@ public class SimpleRpcServer extends RpcServer {
     }
 
 
+    @MustCall({"run"})
     private class Reader implements Runnable {
       final private LinkedBlockingQueue<SimpleServerRpcConnection> pendingConnections;
-      private final Selector readSelector;
+      private final @Owning Selector readSelector;
 
       Reader() throws IOException {
         this.pendingConnections = new LinkedBlockingQueue<>(readerPendingConnectionQueueLength);
@@ -156,6 +162,7 @@ public class SimpleRpcServer extends RpcServer {
       }
 
       @Override
+      @EnsuresCalledMethods(value = {"this.readSelector"}, methods = {"close"})
       public void run() {
         try {
           doRunLoop();
@@ -207,6 +214,7 @@ public class SimpleRpcServer extends RpcServer {
        * so the connection must be queued.  The reader will drain the queue
        * and update its readSelector before performing the next select
        */
+      @SuppressWarnings("objectconstruction:required.method.not.called") //FP: add annotation for Selector?
       public void addConnection(SimpleServerRpcConnection conn) throws IOException {
         pendingConnections.add(conn);
         readSelector.wakeup();
@@ -217,6 +225,7 @@ public class SimpleRpcServer extends RpcServer {
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value="IS2_INCONSISTENT_SYNC",
       justification="selector access is not synchronized; seems fine but concerned changing " +
         "it will have per impact")
+    @SuppressWarnings("objectconstruction:required.method.not.called") //FP: assign to null after closing
     public void run() {
       LOG.info(getName() + ": starting");
       connectionManager.startIdleScan();
@@ -341,7 +350,7 @@ public class SimpleRpcServer extends RpcServer {
         c.setLastContact(System.currentTimeMillis());
       }
     }
-
+    @SuppressWarnings("objectconstruction:required.method.not.called") //FP: add annotation for Selector?
     synchronized void doStop() {
       if (selector != null) {
         selector.wakeup();
@@ -523,6 +532,7 @@ public class SimpleRpcServer extends RpcServer {
    * @throws UnknownHostException if the address isn't a valid host name
    * @throws IOException other random errors from bind
    */
+  @ResetMustCall("#1")
   public static void bind(ServerSocket socket, InetSocketAddress address,
                           int backlog) throws IOException {
     try {

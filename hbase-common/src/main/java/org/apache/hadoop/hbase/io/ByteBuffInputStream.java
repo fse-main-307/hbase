@@ -21,6 +21,7 @@ import java.io.InputStream;
 
 import org.apache.hadoop.hbase.nio.ByteBuff;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.mustcall.qual.InheritableMustCall;
 
 /**
  * Not thread safe!
@@ -28,6 +29,7 @@ import org.apache.yetus.audience.InterfaceAudience;
  * Please note that the reads will cause position movement on wrapped ByteBuff.
  */
 @InterfaceAudience.Private
+@InheritableMustCall({})
 public class ByteBuffInputStream extends InputStream {
 
   private ByteBuff buf;

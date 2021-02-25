@@ -47,6 +47,7 @@ import org.apache.hadoop.hbase.ipc.HBaseRpcController;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.ReflectionUtils;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -529,7 +530,7 @@ class RawAsyncTableImpl implements AsyncTable<AdvancedScanResultConsumer> {
 
   private Scan setDefaultScanConfig(Scan scan) {
     // always create a new scan object as we may reset the start row later.
-    Scan newScan = ReflectionUtils.newInstance(scan.getClass(), scan);
+    @MustCall({}) Scan newScan = ReflectionUtils.newInstance(scan.getClass(), scan);
     if (newScan.getCaching() <= 0) {
       newScan.setCaching(defaultScannerCaching);
     }

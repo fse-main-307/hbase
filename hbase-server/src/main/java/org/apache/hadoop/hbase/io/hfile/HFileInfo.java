@@ -270,6 +270,7 @@ public class HFileInfo implements SortedMap<byte[], byte[]> {
    * Can deserialize protobuf of old Writables format.
    * @see #write(DataOutputStream)
    */
+  @SuppressWarnings("objectconstruction:required.method.not.called") //TP: in remains open
   void read(final DataInputStream in) throws IOException {
     // This code is tested over in TestHFileReaderV1 where we read an old hfile w/ this new code.
     int pblen = ProtobufUtil.lengthOfPBMagic();

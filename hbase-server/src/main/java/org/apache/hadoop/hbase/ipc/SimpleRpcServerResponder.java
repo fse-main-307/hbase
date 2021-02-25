@@ -32,15 +32,19 @@ import org.apache.hadoop.hbase.HBaseIOException;
 import org.apache.yetus.audience.InterfaceAudience;
 import org.apache.hadoop.hbase.util.Threads;
 import org.apache.hadoop.util.StringUtils;
+import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
+import org.checkerframework.checker.mustcall.qual.MustCall;
+import org.checkerframework.checker.objectconstruction.qual.Owning;
 
 /**
  * Sends responses of RPC back to clients.
  */
 @InterfaceAudience.Private
+@MustCall({"run"})
 class SimpleRpcServerResponder extends Thread {
 
   private final SimpleRpcServer simpleRpcServer;
-  private final Selector writeSelector;
+  private final @Owning Selector writeSelector;
   private final Set<SimpleServerRpcConnection> writingCons =
       Collections.newSetFromMap(new ConcurrentHashMap<>());
 
@@ -53,6 +57,7 @@ class SimpleRpcServerResponder extends Thread {
   }
 
   @Override
+  @EnsuresCalledMethods(value = {"this.writeSelector"}, methods = {"close"})
   public void run() {
     SimpleRpcServer.LOG.debug(getName() + ": starting");
     try {
@@ -97,6 +102,7 @@ class SimpleRpcServerResponder extends Thread {
   /**
    * Add a connection to the list that want to write,
    */
+  @SuppressWarnings("objectconstruction:required.method.not.called") //FP: add annotation for Selector?
   public void registerForWrite(SimpleServerRpcConnection c) {
     if (writingCons.add(c)) {
       writeSelector.wakeup();

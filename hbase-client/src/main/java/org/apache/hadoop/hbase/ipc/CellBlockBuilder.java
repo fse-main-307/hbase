@@ -35,6 +35,7 @@ import org.apache.hadoop.hbase.CellScanner;
 import org.apache.hadoop.hbase.DoNotRetryIOException;
 import org.apache.hadoop.hbase.io.ByteBuffAllocator;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.objectconstruction.qual.Owning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.hadoop.hbase.codec.Codec;
@@ -176,7 +177,7 @@ class CellBlockBuilder {
     return true;
   }
 
-  private void encodeCellsTo(OutputStream os, CellScanner cellScanner, Codec codec,
+  private void encodeCellsTo(@Owning OutputStream os, CellScanner cellScanner, Codec codec,
       CompressionCodec compressor) throws IOException {
     Compressor poolCompressor = null;
     try {

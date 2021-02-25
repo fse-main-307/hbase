@@ -40,6 +40,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.Pair;
 import org.apache.hadoop.util.ReflectionUtils;
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.objectconstruction.qual.Owning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -375,7 +376,7 @@ public final class Encryption {
    * @param d
    * @throws IOException
    */
-  public static void decrypt(OutputStream out, InputStream in, int outLen,
+  public static void decrypt(OutputStream out, @Owning InputStream in, int outLen,
       Decryptor d) throws IOException {
     InputStream cin = d.createDecryptionStream(in);
     byte buf[] = new byte[8*1024];
@@ -466,7 +467,7 @@ public final class Encryption {
    * @param iv the initialization vector, can be null
    * @throws IOException
    */
-  public static void decryptWithSubjectKey(OutputStream out, InputStream in, int outLen,
+  public static void decryptWithSubjectKey(OutputStream out, @Owning InputStream in, int outLen,
       String subject, Configuration conf, Cipher cipher, byte[] iv) throws IOException {
     Key key = getSecretKeyForSubject(subject, conf);
     if (key == null) {

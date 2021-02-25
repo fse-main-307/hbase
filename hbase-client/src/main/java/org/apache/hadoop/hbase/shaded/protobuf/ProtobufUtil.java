@@ -277,6 +277,7 @@ public final class ProtobufUtil {
   /**
    * Dynamic class loader to load filter/comparators
    */
+  @SuppressWarnings("mustcall:return.type.incompatible") //FP: https://github.com/typetools/checker-framework/issues/979
   private final static class ClassLoaderHolder {
     private final static ClassLoader CLASS_LOADER;
 

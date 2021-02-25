@@ -24,12 +24,14 @@ import java.nio.ByteBuffer;
 import org.apache.yetus.audience.InterfaceAudience;
 import org.apache.hadoop.hbase.io.hfile.Cacheable;
 import org.apache.hadoop.hbase.nio.ByteBuff;
+import org.checkerframework.checker.mustcall.qual.InheritableMustCall;
 
 /**
  * A class implementing IOEngine interface supports data services for
  * {@link BucketCache}.
  */
 @InterfaceAudience.Private
+@InheritableMustCall("shutdown")
 public interface IOEngine {
   /**
    * @return true if persistent storage is supported for the cache when shutdown

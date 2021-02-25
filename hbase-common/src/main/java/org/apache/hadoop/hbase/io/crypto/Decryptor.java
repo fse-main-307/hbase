@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.security.Key;
 
 import org.apache.yetus.audience.InterfaceAudience;
+import org.checkerframework.checker.mustcall.qual.MustCallChoice;
 
 /**
  * Decryptors apply a cipher to an InputStream to recover plaintext.
@@ -56,7 +57,7 @@ public interface Decryptor {
    * Create a stream for decryption
    * @param in
    */
-  public InputStream createDecryptionStream(InputStream in);
+  @MustCallChoice public InputStream createDecryptionStream(@MustCallChoice InputStream in);
 
   /**
    * Reset state, reinitialize with the key and iv
