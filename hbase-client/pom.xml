@@ -78,6 +78,7 @@
                 <arg>-AwarnUnneededSuppressions</arg>
                 <arg>-AskipDefs=^org.apache.hadoop.hbase.generated\.</arg>
                 <arg>-Astubs=../hbase.astub</arg>
+                <arg>-AnoLightweightOwnership</arg>
               </compilerArgs>
             </configuration>
           </execution>
